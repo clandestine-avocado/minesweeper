@@ -1,13 +1,13 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, simpledialog
 import random
 
 class Minesweeper:
     def __init__(self, master):
         self.master = master
         self.master.title("Minesweeper")
-        self.size = 50
-        self.mines = 400
+        self.size = self.get_grid_size()
+        self.mines = int(self.size * self.size * 0.16)  # Approximately 16% of cells are mines
         self.grid = [[0 for _ in range(self.size)] for _ in range(self.size)]
         self.buttons = [[None for _ in range(self.size)] for _ in range(self.size)]
         self.flags = [[False for _ in range(self.size)] for _ in range(self.size)]
@@ -16,6 +16,11 @@ class Minesweeper:
 
         self.create_widgets()
         self.create_grid()
+
+    def get_grid_size(self):
+        size = simpledialog.askinteger("Grid Size", "Enter the grid size (e.g., 10 for a 10x10 grid):", 
+                                       minvalue=5, maxvalue=50)
+        return size if size else 10  # Default to 10x10 if user cancels
 
     def create_widgets(self):
         self.top_frame = tk.Frame(self.master)
